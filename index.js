@@ -97,6 +97,10 @@ app.delete("/dashboard/user/:id", auth, async (req, res) => {
   res.json({ message: "User deleted" });
 });
 
+app.post('/logout', auth, (req, res) => {
+  res.json({ message: 'Logout successful. Please remove token from client.' });
+});
+
 app.listen(process.env.PORT, () =>
   console.log(`Server running on http://localhost:${process.env.PORT}`),
 );
