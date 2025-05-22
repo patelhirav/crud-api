@@ -97,8 +97,58 @@ app.delete("/dashboard/user/:id", auth, async (req, res) => {
   res.json({ message: "User deleted" });
 });
 
-app.post('/logout', auth, (req, res) => {
-  res.json({ message: 'Logout successful. Please remove token from client.' });
+app.get("/", (req, res) => {
+  const baseUrl = "https://crud-api-5f45.onrender.com";
+  res.send(`
+    <h1>CRUD API - Available Endpoints</h1>
+    <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; max-width: 800px;">
+      <thead style="background-color: #f2f2f2;">
+        <tr>
+          <th>Method</th>
+          <th>Full URL</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>POST</td>
+          <td><code>${baseUrl}/signup</code></td>
+          <td>Signup new user (name, email, password)</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td><code>${baseUrl}/login</code></td>
+          <td>Login user (email, password)</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td><code>${baseUrl}/logout</code></td>
+          <td>Logout user (client removes token)</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td><code>${baseUrl}/dashboard/user</code></td>
+          <td>Add sub-user (name, email, department)</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td><code>${baseUrl}/dashboard/users</code></td>
+          <td>Get all sub-users created by logged-in user</td>
+        </tr>
+        <tr>
+          <td>PUT</td>
+          <td><code>${baseUrl}/dashboard/user/:id</code></td>
+          <td>Update sub-user by ID</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td><code>${baseUrl}/dashboard/user/:id</code></td>
+          <td>Delete sub-user by ID</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><em>Note: All /dashboard routes require an Authorization header with a valid Bearer token.</em></p>
+  `);
 });
 
 app.listen(process.env.PORT, () =>
