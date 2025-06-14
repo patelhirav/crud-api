@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
-const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
