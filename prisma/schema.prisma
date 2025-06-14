@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Account {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   name     String
-  email    String @unique
+  email    String  @unique
   password String
   users    User[]
 }
 
 model User {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   email      String
-  department String
-  account    Account @relation(fields: [accountId], references: [id])
-  accountId  String  @db.ObjectId
+  department String?
+  accountId  String   @db.ObjectId
+  account    Account  @relation(fields: [accountId], references: [id])
 }
