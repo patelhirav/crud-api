@@ -75,18 +75,34 @@ app.get("/dashboard/users", auth, async (req, res) => {
   res.json(users);
 });
 
-// Update a sub-user
 app.put("/dashboard/user/:id", auth, async (req, res) => {
   const { name, email, department } = req.body;
-  const { id } = req.params;
+  const id = parseInt(req.params.id, 10); // Convert to number if your ID is Int
 
-  const updated = await prismaClient.user.updateMany({
-    where: { id, accountId: req.user.userId },
-    data: { name, email, department },
-  });
+  try {
+    const subUser = await prismaClient.user.findFirst({
+      where: {
+        id,
+        accountId: req.user.userId,
+      },
+    });
 
-  res.json({ message: "User updated", updated });
+    if (!subUser) {
+      return res.status(404).json({ message: "User not found or unauthorized" });
+    }
+
+    const updated = await prismaClient.user.update({
+      where: { id },
+      data: { name, email, department },
+    });
+
+    res.json({ message: "User updated", updated });
+  } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
 });
+
 
 // Delete sub-user
 app.delete("/dashboard/user/:id", auth, async (req, res) => {
